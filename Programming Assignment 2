@@ -1,0 +1,32 @@
+#This function aims to save to cache the inverse of a matrix.
+#For that, I created a pair of functions that are used to create 
+#a special object that stores a matrix and caches
+
+
+MakeCache<-function(x=matrix()){
+  arg<-NULL
+  set<-function(y){
+    x<<-y
+    arg<<-NULL
+  }
+  get<-function()x
+  setInverse<-function(inverse)arg<<-inverse
+  getInverse<-function()arg
+  list(set=set,get=get,setInverse=setInverse,getInverse=getInverse)
+  
+}
+
+#This function computes the inverse of matrix created by "MakeCache"
+#If the inverse has already been calculate, it should retrieve the inverse from the cache
+
+Solve<-function(x,..){
+  arg<-x$getInverse()
+  if(!is.null(arg)){
+    print("getting cached data")
+    return(arg)
+  }
+  f<-x$get()
+  arg<-solve(f,..)
+  x$setInverse(arg)
+  arg
+}
